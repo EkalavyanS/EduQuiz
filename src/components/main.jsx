@@ -11,6 +11,7 @@ export default function main() {
     text: "#1f2937",
     accent: "gray",
   })
+  const [flashShow, setFlashShow] = useState(false)
   return (
     (<div
       className=" flex flex-col items-center justify-center min-h-screen bg-[#f9fafb] text-[#1f2937] font-[Inter,sans-serif]"
@@ -51,6 +52,10 @@ export default function main() {
             <div className="flex items-center gap-4">
               <button
                 type="submit"
+                onClick={(e)=>{
+                  e.preventDefault()
+                  setFlashShow(true)
+                }}
                 className="bg-[#6366f1] text-white rounded-md py-3 px-4 hover:bg-[#4f46e5] focus:outline-none focus:ring-2 focus:ring-[#6366f1] focus:ring-offset-2 text-lg">
                 Generate Flashcards
               </button>
@@ -62,7 +67,7 @@ export default function main() {
           </form>
         </div>
       </main>
-      <Flashcard />
+      {flashShow ? <Flashcard topic={topic} class={className}/>:<noscript />}
     </div>)
   );
 }
