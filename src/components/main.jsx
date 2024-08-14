@@ -38,30 +38,24 @@ export default function Main() {
         <div className="bg-gray-50 shadow-md rounded-lg p-8 mb-8">
           <form className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
-              <label htmlFor="topic" className="block mb-2 font-black text-lg">
-                Topic:-
-              </label>
               <input
                 type="text"
                 id="topic"
                 value={topic}
                 onChange={(e) => setTopic(e.target.value)}
                 className="w-full border-2 border-gray-200 rounded-md shadow-sm focus:border-[#6366f1] focus:ring-[#6366f1] text-lg p-3"
-                placeholder="Enter the topic"
+                placeholder="Topic"
                 required
               />
             </div>
             <div>
-              <label htmlFor="class" className="block mb-2 font-black text-lg">
-                Class:-
-              </label>
               <input
                 type="number"
                 id="class"
                 value={className}
                 onChange={(e) => setClassName(e.target.value)}
                 className="w-full border-2 border-gray-200 rounded-md shadow-sm focus:border-[#6366f1] focus:ring-[#6366f1] text-lg p-3"
-                placeholder="Enter your class"
+                placeholder="Class"
                 required
               />
             </div>
