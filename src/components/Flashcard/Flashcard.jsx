@@ -23,29 +23,23 @@ function Flashcard(props) {
         const response = await result.response;
         const text = await response.text(); 
         const cleanText = (text) => {
-            console.log(text);
             return text.replace(/\*\*|\*/g, '');
           };
         
         function processResponse(response) {
-            // Split the response into slides based on potential delimiters (e.g., newlines, specific keywords)
             const slides = response.split('\n\n');
-          
-            // Extract topic and explanation for each slide
             const formattedSlides = slides.map(slide => {
                 const [potentialTitle, ...remainingLines] = slide.split('\n');
                 const title = cleanText(potentialTitle || '') || 'Untitled Slide';
-                const explanation = cleanText(remainingLines.join('\n') || ''); // Use optional chaining and empty string fallback
+                const explanation = cleanText(remainingLines.join('\n') || ''); 
                 return { Topic: title || 'Untitled Slide', explanation };
               });
               
-          
             return formattedSlides;
-          } // Assuming the response is JSON
+          }
         setPromptResponses(processResponse(text));
-        setPromptResponses(processResponse(text));
-    await new Promise((resolve) => setTimeout(resolve, 1500)); // Simulate 1.5 seconds delay
-    setLoading(false);
+        await new Promise((resolve) => setTimeout(resolve, 1500)); // Simulate 1.5 seconds delay
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching data from Gemini:", error);
       } finally {
@@ -57,7 +51,7 @@ function Flashcard(props) {
   }, [props.topic, props.class]);
 
   return (
-    <div className="flex justify-center w-full">
+    <div className="flex justify-center w-full mt-20">
       {loading ? (
         <Carousel
           opts={{
@@ -70,40 +64,40 @@ function Flashcard(props) {
               <CarouselItem key={index} className="w-full md:w-1/2 lg:w-1/3">
                 <div className="p-2">
                   <Card className="w-full">
-                    <CardContent className="flex flex-col aspect-square items-center justify-center p-6 bg-gradient-to-r from-gray-100 to-white">
-                      <Skeleton height={40} width={100} style={{ backgroundColor: '#f0f0f0', borderRadius: '5px' }} />
-                      <Skeleton count={3} height={20} style={{ backgroundColor: '#e0e0e0', borderRadius: '5px', margin: '5px 0' }} />
+                    <CardContent className="flex flex-col aspect-square items-center justify-center p-6 bg-gradient-to-r from-blue-100 to-blue-50 shadow-lg rounded-lg">
+                      <Skeleton height={40} width={150} style={{ backgroundColor: '#cce0ff', borderRadius: '5px' }} />
+                      <Skeleton count={3} height={20} style={{ backgroundColor: '#b3d1ff', borderRadius: '5px', margin: '5px 0' }} />
                     </CardContent>
                   </Card>
                 </div>
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
+          <CarouselPrevious className="text-blue-500 hover:text-blue-700">Previous</CarouselPrevious>
+          <CarouselNext className="text-blue-500 hover:text-blue-700">Next</CarouselNext>
         </Carousel>
       ) : (
         <Carousel
-        opts={{
-          align: "start",
-        }}
-        className="w-full max-w-3xl mb-20"
-      >
-        <CarouselContent className="space-x-4">
-          {promptResponses.map((slide, index) => (
-            <CarouselItem key={index} className="w-full md:w-1/2 lg:w-1/3">
-              <Card className="bg-white shadow-md rounded-lg">
-                <CardContent className="flex flex-col aspect-square items-center justify-center p-6">
-                  <h2 className="text-2xl font-bold text-center">{slide.Topic}</h2>
-                  <p className="text-lg text-gray-700 mt-4">{slide.explanation}</p>
-                </CardContent>
-              </Card>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious className="text-gray-500 hover:text-gray-700">Previous</CarouselPrevious>
-        <CarouselNext className="text-gray-500 hover:text-gray-700">Next</CarouselNext>
-      </Carousel>
+          opts={{
+            align: "start",
+          }}
+          className="w-full max-w-3xl mb-20"
+        >
+          <CarouselContent className="space-x-4">
+            {promptResponses.map((slide, index) => (
+              <CarouselItem key={index} className="w-full md:w-1/2 lg:w-1/3">
+                <Card className="bg-white shadow-md rounded-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300">
+                  <CardContent className="flex flex-col aspect-square items-center justify-center p-6 bg-gradient-to-r from-indigo-100 to-indigo-50 rounded-lg">
+                    <h2 className="text-2xl font-bold text-center text-indigo-600">{slide.Topic}</h2>
+                    <p className="text-lg text-gray-700 mt-4 text-center">{slide.explanation}</p>
+                  </CardContent>
+                </Card>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="text-indigo-500 hover:text-indigo-700">Previous</CarouselPrevious>
+          <CarouselNext className="text-indigo-500 hover:text-indigo-700">Next</CarouselNext>
+        </Carousel>
       )}
     </div>
   );

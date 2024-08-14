@@ -1,27 +1,41 @@
-import { useState } from "react"
-import Flashcard from "./Flashcard/Flashcard"
+import { useState } from "react";
+import Flashcard from "./Flashcard/Flashcard";
+import Quiz from "./Quiz/Quiz";
 
-export default function main() {
-  const [topic, setTopic] = useState("")
-  const [className, setClassName] = useState("")
-  const [flashcards, setFlashcards] = useState([])
-  const [fontFamily, setFontFamily] = useState("Inter, sans-serif")
+export default function Main() {
+  const [topic, setTopic] = useState("");
+  const [className, setClassName] = useState("");
+
   const [colorScheme, setColorScheme] = useState({
     background: "whitesmoke",
     text: "#1f2937",
     accent: "gray",
-  })
-  const [flashShow, setFlashShow] = useState(false)
+  });
+  const [flashShow, setFlashShow] = useState(false);
+  const [quizShow, setQuizShow] = useState(false);
+
+  const handleGenerateFlashcards = (e) => {
+    e.preventDefault();
+    setFlashShow(true);
+    setQuizShow(false); // Ensure quiz is hidden when flashcards are shown
+  };
+
+  const handleGenerateQuiz = (e) => {
+    e.preventDefault();
+    setQuizShow(true);
+    setFlashShow(false); // Ensure flashcards are hidden when quiz is shown
+  };
+
   return (
-    (<div
-      className=" flex flex-col items-center justify-center min-h-screen bg-[#f9fafb] text-[#1f2937] font-[Inter,sans-serif]"
-      style={{ backgroundColor: colorScheme.background, color: colorScheme.text }}>
-      <main className="w-full max-w-4xl px-4 sm:px-6 lg:px-8 py-12">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Card and Quiz Generator</h1>
-          <p className="text-gray-500">Create and customize flashcards for your topics and classes.</p>
+    <div
+      className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-100 to-blue-300 text-gray-800 font-[Inter,sans-serif]"
+    >
+      <main className="w-full max-w-4xl px-6 py-12 bg-white rounded-lg shadow-lg">
+        <div className="mb-8 text-center">
+          <h1 className="text-4xl font-extrabold mb-4 text-blue-600">Card & Quiz Generator</h1>
+          <p className="text-lg text-gray-600">Create and customize flashcards for your topics and classes.</p>
         </div>
-        <div className="bg-white shadow-md rounded-lg p-6 mb-8">
+        <div className="bg-gray-50 shadow-md rounded-lg p-8 mb-8">
           <form className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
               <label htmlFor="topic" className="block mb-2 font-black text-lg">
@@ -34,7 +48,8 @@ export default function main() {
                 onChange={(e) => setTopic(e.target.value)}
                 className="w-full border-2 border-gray-200 rounded-md shadow-sm focus:border-[#6366f1] focus:ring-[#6366f1] text-lg p-3"
                 placeholder="Enter the topic"
-                required />
+                required
+              />
             </div>
             <div>
               <label htmlFor="class" className="block mb-2 font-black text-lg">
@@ -47,27 +62,29 @@ export default function main() {
                 onChange={(e) => setClassName(e.target.value)}
                 className="w-full border-2 border-gray-200 rounded-md shadow-sm focus:border-[#6366f1] focus:ring-[#6366f1] text-lg p-3"
                 placeholder="Enter your class"
-                required />
+                required
+              />
             </div>
             <div className="flex items-center gap-4">
               <button
                 type="submit"
-                onClick={(e)=>{
-                  e.preventDefault()
-                  setFlashShow(true)
-                }}
-                className="bg-[#6366f1] text-white rounded-md py-3 px-4 hover:bg-[#4f46e5] focus:outline-none focus:ring-2 focus:ring-[#6366f1] focus:ring-offset-2 text-lg">
+                onClick={handleGenerateFlashcards}
+                className="bg-[#6366f1] text-white rounded-md py-3 px-4 hover:bg-[#4f46e5] focus:outline-none focus:ring-2 focus:ring-[#6366f1] focus:ring-offset-2 text-lg"
+              >
                 Generate Flashcards
               </button>
               <button
-                className="bg-[#6366f1] text-white rounded-md py-3 px-4 hover:bg-[#4f46e5] focus:outline-none focus:ring-2 focus:ring-[#6366f1] focus:ring-offset-2 text-lg">
+                onClick={handleGenerateQuiz}
+                className="bg-[#6366f1] text-white rounded-md py-3 px-4 hover:bg-[#4f46e5] focus:outline-none focus:ring-2 focus:ring-[#6366f1] focus:ring-offset-2 text-lg"
+              >
                 Generate Quiz
               </button>
             </div>
           </form>
         </div>
       </main>
-      {flashShow ? <Flashcard topic={topic} class={className}/>:<noscript />}
-    </div>)
+      {flashShow ? <Flashcard topic={topic} class={className} /> : null}
+      {quizShow ? <Quiz topic={topic} class={className} /> : null}
+    </div>
   );
 }
