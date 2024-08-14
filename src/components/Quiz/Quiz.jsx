@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { genAI } from "../../gemini-config";
 import Confetti from 'react-confetti';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 function Quiz(props) {
   const [loading, setLoading] = useState(true);
@@ -57,10 +59,17 @@ function Quiz(props) {
   };
 
   const handleNextQuestion = () => {
-    if (selectedOption === questions[currentQuestion].options[questions[currentQuestion].correctAnswer]) {
+    const current = questions[currentQuestion];
+    const correctIndex = Number(current.correctAnswer); // Ensure correctAnswer is a number
+    const correctOption = current.options[correctIndex];
+    const trimmedSelectedOption = selectedOption?.trim();
+    console.log(current.correctAnswer)
+    if (trimmedSelectedOption === current.correctAnswer) {
       setScore(score + 1);
     }
+
     setSelectedOption(null);
+
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
@@ -69,7 +78,7 @@ function Quiz(props) {
   };
 
   if (loading) {
-    return <div>Loading quiz...</div>;
+    return <div><Skeleton height={40} width={150} style={{ backgroundColor: '#cce0ff', borderRadius: '5px' }} /></div>
   }
 
   if (!questions.length) {
@@ -77,7 +86,8 @@ function Quiz(props) {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center w-full mt-20">
+    <div className="
+    lex-col items-center justify-center w-full mt-20">
       {quizComplete ? (
         <div className="text-center">
           <h2 className="text-3xl font-bold mb-4">Quiz Complete!</h2>
@@ -89,15 +99,21 @@ function Quiz(props) {
           <CardContent>
             <h2 className="text-xl font-bold mb-4">{questions[currentQuestion]?.question}</h2>
             <ul>
-              {questions[currentQuestion].options.map((option, index) => (
-                <li key={index} className={`p-2 rounded-md cursor-pointer ${selectedOption === option ? 'bg-blue-200' : 'bg-gray-100'}`} onClick={() => handleOptionClick(option)}>
+              {questions[currentQuestion]?.options.map((option, index) => (
+                <li
+                  key={index}
+                  className={`p-2 rounded-md cursor-pointer ${selectedOption === option ? 'bg-blue-200' : 'bg-gray-100'}`}
+                  onClick={() => handleOptionClick(option)}
+                >
                   {option}
                 </li>
               ))}
             </ul>
             <button
               onClick={handleNextQuestion}
-              className="mt-6 bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 transition-all">
+              className="mt-6 bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 transition-all"
+              disabled={!selectedOption}
+            >
               Next
             </button>
           </CardContent>
