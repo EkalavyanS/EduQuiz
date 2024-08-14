@@ -1,0 +1,21 @@
+{
+    "name": "Flashy",
+    "short_name": "Flashy",
+    "description": "An app for getting flash cards and quiz on study materials.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "whitesmoke",
+    "theme_color": "#000000",
+    "icons": [
+      {
+        "src": "icon-192x192.png",
+        "sizes": "192x192",
+        "type": "flashy-logo.png"
+      }
+    ],
+    "orientation": "portrait",
+    "scope": "/",
+    "lang": "en",
+    "dir": "ltr"
+  }
+  

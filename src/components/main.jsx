@@ -32,8 +32,6 @@ export default function Main() {
     >
       <main className="w-full max-w-4xl px-6 py-12 bg-white rounded-lg shadow-lg">
         <div className="mb-8 text-center">
-          <h1 className="text-4xl font-extrabold mb-4 text-blue-600">Card & Quiz Generator</h1>
-          <p className="text-lg text-gray-600">Create and customize flashcards for your topics and classes.</p>
         </div>
         <div className="bg-gray-50 shadow-md rounded-lg p-8 mb-8">
           <form className="grid grid-cols-1 sm:grid-cols-2 gap-6">

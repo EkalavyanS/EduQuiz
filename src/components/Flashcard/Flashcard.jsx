@@ -23,20 +23,20 @@ function Flashcard(props) {
         const response = await result.response;
         const text = await response.text(); 
         const cleanText = (text) => {
-            return text.replace(/\*\*|\*/g, '');
-          };
+          return text.replace(/\*\*|\*/g, '');
+        };
         
         function processResponse(response) {
-            const slides = response.split('\n\n');
-            const formattedSlides = slides.map(slide => {
-                const [potentialTitle, ...remainingLines] = slide.split('\n');
-                const title = cleanText(potentialTitle || '') || 'Untitled Slide';
-                const explanation = cleanText(remainingLines.join('\n') || ''); 
-                return { Topic: title || 'Untitled Slide', explanation };
-              });
+          const slides = response.split('\n\n');
+          const formattedSlides = slides.map(slide => {
+            const [potentialTitle, ...remainingLines] = slide.split('\n');
+            const title = cleanText(potentialTitle || '') || 'Untitled Slide';
+            const explanation = cleanText(remainingLines.join('\n') || ''); 
+            return { Topic: title || 'Untitled Slide', explanation };
+          });
               
-            return formattedSlides;
-          }
+          return formattedSlides;
+        }
         setPromptResponses(processResponse(text));
         await new Promise((resolve) => setTimeout(resolve, 1500)); // Simulate 1.5 seconds delay
         setLoading(false);
@@ -51,7 +51,7 @@ function Flashcard(props) {
   }, [props.topic, props.class]);
 
   return (
-    <div className="flex justify-center w-full mt-20">
+    <div className="flex justify-center w-full mt-10 px-4"> {/* Added px-4 for padding */}
       {loading ? (
         <Carousel
           opts={{

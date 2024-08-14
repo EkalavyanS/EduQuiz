@@ -12,12 +12,23 @@ function Quiz(props) {
   const [score, setScore] = useState(0);
   const [quizComplete, setQuizComplete] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [showConfetti, setShowConfetti] = useState(false);
   const handleBackQuestion = () => {
     if (currentQuestion > 0) {
       setCurrentQuestion(currentQuestion - 1);
       setSelectedOption(null);
     }
   };
+  useEffect(() => {
+    if (score === questions.length) {
+      setShowConfetti(true);
+      const timer = setTimeout(() => {
+        setShowConfetti(false);
+      }, 5000); // Confetti will disappear after 5 seconds
+
+      return () => clearTimeout(timer); // Cleanup timer on unmount or when score changes
+    }
+  }, [score, questions.length]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -87,16 +98,16 @@ function Quiz(props) {
   }
 
   if (!questions.length) {
-    return <div>No questions available. Please try again later.</div>;
+    return <div className='mt-5 fond-lg font-serif'>Error occured. Please try reloading the page.</div>;
   }
 
   return (
-    <div className="flex flex-col items-center justify-center w-full mt-20">
+    <div className="flex flex-col items-center justify-center w-full mt-10">
       {quizComplete ? (
         <div className="text-center">
           <h2 className="text-3xl font-bold mb-4">Quiz Complete!</h2>
           <p className="text-2xl">Your Score: {score}/{questions.length}</p>
-          {score === questions.length && <Confetti className='w-full' />}
+          {showConfetti && <Confetti className='w-full' />}
         </div>
       ) : (
         <Card className="w-full max-w-3xl mb-20 bg-white shadow-md rounded-lg p-6">
@@ -106,7 +117,7 @@ function Quiz(props) {
               {questions[currentQuestion]?.options.map((option, index) => (
                 <li
                   key={index}
-                  className={`p-2 rounded-md cursor-pointer ${selectedOption === option ? 'bg-blue-200' : 'bg-gray-100'}`}
+                  className={`p-2 rounded-md cursor-pointer mb-2 ${selectedOption === option ? 'bg-blue-200' : 'bg-gray-100'}`}
                   onClick={() => handleOptionClick(option)}
                 >
                   {option}
