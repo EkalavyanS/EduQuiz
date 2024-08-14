@@ -12,7 +12,12 @@ function Quiz(props) {
   const [score, setScore] = useState(0);
   const [quizComplete, setQuizComplete] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
-
+  const handleBackQuestion = () => {
+    if (currentQuestion > 0) {
+      setCurrentQuestion(currentQuestion - 1);
+      setSelectedOption(null);
+    }
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -86,13 +91,12 @@ function Quiz(props) {
   }
 
   return (
-    <div className="
-    lex-col items-center justify-center w-full mt-20">
+    <div className="flex flex-col items-center justify-center w-full mt-20">
       {quizComplete ? (
         <div className="text-center">
           <h2 className="text-3xl font-bold mb-4">Quiz Complete!</h2>
           <p className="text-2xl">Your Score: {score}/{questions.length}</p>
-          {score === questions.length && <Confetti />}
+          {score === questions.length && <Confetti className='w-full' />}
         </div>
       ) : (
         <Card className="w-full max-w-3xl mb-20 bg-white shadow-md rounded-lg p-6">
@@ -109,13 +113,22 @@ function Quiz(props) {
                 </li>
               ))}
             </ul>
-            <button
-              onClick={handleNextQuestion}
-              className="mt-6 bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 transition-all"
-              disabled={!selectedOption}
-            >
-              Next
-            </button>
+            <div className="flex justify-between mt-6">
+              <button
+                onClick={handleBackQuestion}
+                className="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition-all"
+                disabled={currentQuestion === 0}
+              >
+                Back
+              </button>
+              <button
+                onClick={handleNextQuestion}
+                className="bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 transition-all"
+                disabled={!selectedOption}
+              >
+                Next
+              </button>
+            </div>
           </CardContent>
         </Card>
       )}
