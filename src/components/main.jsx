@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Flashcard from "./Flashcard/Flashcard";
 import Quiz from "./Quiz/Quiz";
 
@@ -14,6 +14,9 @@ export default function Main() {
   const [flashShow, setFlashShow] = useState(false);
   const [quizShow, setQuizShow] = useState(false);
 
+  const flashcardRef = useRef(null);
+  const quizRef = useRef(null);
+
   const handleGenerateFlashcards = (e) => {
     e.preventDefault();
     setFlashShow(true);
@@ -26,12 +29,23 @@ export default function Main() {
     setFlashShow(false); // Ensure flashcards are hidden when quiz is shown
   };
 
+  useEffect(() => {
+    if (flashShow && flashcardRef.current) {
+      flashcardRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+    if (quizShow && quizRef.current) {
+      quizRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [flashShow, quizShow]);
+
   return (
     <div
       className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-100 to-blue-300 text-gray-800 font-[Inter,sans-serif]"
     >
-      <main className="w-full max-w-4xl px-6 py-12 bg-white rounded-lg shadow-lg">
+      <main className="w-full max-w-4xl px-6 py-12 bg-white rounded-lg shadow-lg relative">
         <div className="mb-8 text-center">
+          <h1 className="text-4xl font-extrabold mb-4 text-blue-700">Flashy</h1>
+          <p className="text-lg text-gray-600">Create flashcards and quizzes for your topics and age.</p>
         </div>
         <div className="bg-gray-50 shadow-md rounded-lg p-8 mb-8">
           <form className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -75,8 +89,14 @@ export default function Main() {
           </form>
         </div>
       </main>
-      {flashShow ? <Flashcard topic={topic} class={className} /> : null}
-      {quizShow ? <Quiz topic={topic} class={className} /> : null}
+      {flashShow ? (
+          <Flashcard ref={flashcardRef} topic={topic} class={className} />
+      ) : null}
+      {quizShow ? (
+
+          <Quiz ref={quizRef} topic={topic} class={className} />
+
+      ) : null}
     </div>
   );
 }
