@@ -44,7 +44,6 @@ export default function Main() {
     >
       <main className="w-full max-w-4xl px-6 py-12 bg-white rounded-lg shadow-lg relative">
         <div className="mb-8 text-center">
-          <h1 className="text-4xl font-extrabold mb-4 text-blue-700">Flashy</h1>
           <p className="text-lg text-gray-600">Create flashcards and quizzes for your topics and age.</p>
         </div>
         <div className="bg-gray-50 shadow-md rounded-lg p-8 mb-8">
